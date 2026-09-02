@@ -15,7 +15,7 @@
       "feeds": [
         {
           "id": "hnrsks_home",
-          "list_url": "https://www.hnrsks.com/",
+          "list_url": "http://www.hnrsks.com/sitesources/hnsrskszx/page_pc/index.html",
           "parser_type": "generic_link_date",
           "encoding": "auto",
           "interval_min": 1440,
@@ -23,7 +23,7 @@
           "recruitment_context": false,
           "link_include_patterns": ["article"],
           "link_exclude_patterns": ["javascript:"],
-          "verification_status": "official_domain_and_article_pattern_verified_list_selector_pending"
+          "verification_status": "official_http_entry_verified_on_github_actions"
         }
       ]
     },
