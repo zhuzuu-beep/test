@@ -10,8 +10,8 @@ ROOT = Path(__file__).resolve().parents[1]
 class GitHubDeploymentTest(unittest.TestCase):
     def test_daily_workflow_has_required_safety_controls(self) -> None:
         workflow = (ROOT / ".github/workflows/daily-monitor.yml").read_text(encoding="utf-8")
-        self.assertIn("cron: '5 13 * * *'", workflow)
         self.assertIn("workflow_dispatch:", workflow)
+        self.assertNotIn("schedule:", workflow)
         self.assertIn("contents: write", workflow)
         self.assertIn("concurrency:", workflow)
         self.assertIn("continue-on-error: true", workflow)
