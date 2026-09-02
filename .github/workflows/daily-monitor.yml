@@ -41,6 +41,26 @@ jobs:
       - name: 运行自动化测试
         run: python -m unittest discover -s tests -v
 
+      - name: 测试河南人事考试网TLS兼容性
+        if: github.event_name == 'push'
+        continue-on-error: true
+        run: |
+          set +e
+          for mode in default legacy; do
+            echo "===== HTTPS $mode ====="
+            if [ "$mode" = "legacy" ]; then
+              curl -4 -I --max-time 25 --connect-timeout 10 \
+                --ciphers 'DEFAULT:@SECLEVEL=1' \
+                'https://www.hnrsks.com/sitesources/hnsrskszx/page_pc/index.html'
+            else
+              curl -4 -I --max-time 25 --connect-timeout 10 \
+                'https://www.hnrsks.com/sitesources/hnsrskszx/page_pc/index.html'
+            fi
+          done
+          echo "===== HTTP redirect ====="
+          curl -4 -I --max-time 25 --connect-timeout 10 \
+            'http://www.hnrsks.com/sitesources/hnsrskszx/page_pc/index.html'
+
       - name: 执行每日采集和飞书推送
         id: daily
         continue-on-error: true
