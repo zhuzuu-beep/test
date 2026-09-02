@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-from app.delivery import build_card
+from app.delivery import build_card, build_health_card
 
 
 class DeliveryTest(unittest.TestCase):
@@ -24,6 +24,18 @@ class DeliveryTest(unittest.TestCase):
         rendered = str(payload)
         self.assertNotIn("应届生：未知", rendered)
         self.assertIn("未关联原事项", rendered)
+
+    def test_health_card_does_not_report_normal_when_a_feed_failed(self) -> None:
+        payload = build_health_card({
+            "enabled_feeds": 1,
+            "successful_feeds": 0,
+            "failed_feeds": 1,
+            "new_announcements": 0,
+        })
+        rendered = str(payload)
+        self.assertNotIn("今日监控运行正常", rendered)
+        self.assertIn("存在抓取失败", rendered)
+        self.assertIn("orange", rendered)
 
 
 if __name__ == "__main__":
