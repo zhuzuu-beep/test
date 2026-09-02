@@ -1,0 +1,102 @@
+{
+  "generated_at": "2026-08-31T20:18:09+08:00",
+  "environment": "local_check_only",
+  "checks": [
+    {
+      "name": "python_version",
+      "ok": true,
+      "value": "3.12.13"
+    },
+    {
+      "name": "timezone",
+      "ok": true,
+      "value": "2026-08-31T20:17:44+08:00"
+    },
+    {
+      "name": "db_directory_writable",
+      "ok": true,
+      "value": "data"
+    },
+    {
+      "name": "log_directory_writable",
+      "ok": true,
+      "value": "logs"
+    },
+    {
+      "name": "systemctl_available",
+      "ok": true,
+      "value": "/usr/local/bin/systemctl"
+    },
+    {
+      "name": "feishu_webhook_configured",
+      "ok": false,
+      "value": "missing"
+    }
+  ],
+  "feeds": [
+    {
+      "feed_id": "hnrsks_home",
+      "source": "河南省人事考试中心",
+      "enabled": true,
+      "verification_status": "official_domain_and_article_pattern_verified_list_selector_pending",
+      "list_url": "https://www.hnrsks.com/",
+      "network_test": "failed",
+      "error_type": "FetchError",
+      "error": "HTTP Error 502: Bad Gateway"
+    },
+    {
+      "feed_id": "henan_hrss_recruitment",
+      "source": "河南省人力资源和社会保障厅",
+      "enabled": false,
+      "verification_status": "pending_column_url",
+      "list_url": "https://hrss.henan.gov.cn/",
+      "network_test": "not_requested"
+    },
+    {
+      "feed_id": "zhengzhou_hrss_recruitment",
+      "source": "郑州市人力资源和社会保障局",
+      "enabled": false,
+      "verification_status": "list_url_verified_selector_pending",
+      "list_url": "https://zzrs.zhengzhou.gov.cn/zlgg/index.jhtml",
+      "network_test": "not_requested"
+    },
+    {
+      "feed_id": "zhengzhou_rsks_home",
+      "source": "郑州人事考试网",
+      "enabled": false,
+      "verification_status": "pending_live_access",
+      "list_url": "https://www.zzrsks.com.cn/",
+      "network_test": "not_requested"
+    },
+    {
+      "feed_id": "zhoukou_hrss_notices",
+      "source": "周口市人力资源和社会保障局",
+      "enabled": false,
+      "verification_status": "list_url_verified_selector_pending",
+      "list_url": "https://rsj.zhoukou.gov.cn/sitesources/zkrlzyhshbzj/page_pc/xwdt/gggs/list2.html",
+      "network_test": "not_requested"
+    },
+    {
+      "feed_id": "zhoukou_rsks_home",
+      "source": "周口人事考试网",
+      "enabled": false,
+      "verification_status": "pending_http_redirect_encoding_check",
+      "list_url": "http://www.zkrsks.com/",
+      "network_test": "not_requested"
+    },
+    {
+      "feed_id": "scs_annual_exam",
+      "source": "国家公务员局",
+      "enabled": false,
+      "verification_status": "pending_annual_topic_discovery",
+      "list_url": "https://www.scs.gov.cn/",
+      "network_test": "not_requested"
+    }
+  ],
+  "ready_for_phase1_offline": true,
+  "production_blockers": [
+    "尚未取得生产主机及既有monitor-xicheng.py部署信息",
+    "飞书Webhook须在生产环境以环境变量配置",
+    "pending状态栏目须在生产网络完成列表页和解析器踩点后方可启用"
+  ]
+}
