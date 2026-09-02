@@ -1,9 +1,6 @@
 name: 河南招聘每日监控
 
 on:
-  schedule:
-    # GitHub Actions使用UTC时间。13:05 UTC对应北京时间21:05。
-    - cron: '5 13 * * *'
   workflow_dispatch:
 
 permissions:
