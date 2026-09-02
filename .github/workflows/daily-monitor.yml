@@ -5,6 +5,10 @@ on:
     # GitHub Actions使用UTC时间。13:05 UTC对应北京时间21:05。
     - cron: '5 13 * * *'
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflow-test-trigger'
 
 permissions:
   contents: write
@@ -21,6 +25,7 @@ jobs:
       TZ: Asia/Shanghai
       FEISHU_WEBHOOK_URL: ${{ secrets.FEISHU_WEBHOOK_URL }}
       FEISHU_SECRET: ${{ secrets.FEISHU_SECRET }}
+      DRY_RUN: ${{ github.event_name == 'push' || secrets.FEISHU_WEBHOOK_URL == '' }}
 
     steps:
       - name: 检出代码和历史状态
@@ -39,12 +44,17 @@ jobs:
       - name: 执行每日采集和飞书推送
         id: daily
         continue-on-error: true
-        run: >-
-          python -m app.cli
-          --config-dir config
-          --db state/recruit_monitor.db
-          --log-dir logs
-          daily
+        run: |
+          extra_args=()
+          if [ "$DRY_RUN" = "true" ]; then
+            echo "未配置飞书密钥或本次为测试触发，使用dry-run模式"
+            extra_args+=(--dry-run)
+          fi
+          python -m app.cli \
+            --config-dir config \
+            --db state/recruit_monitor.db \
+            --log-dir logs \
+            daily "${extra_args[@]}"
 
       - name: 合并SQLite临时日志
         if: always()
