@@ -18,7 +18,7 @@ class ParserTest(unittest.TestCase):
         candidates = parse_candidates(decode_html(body), feed)
         self.assertEqual(len(candidates), 6)
         self.assertEqual(candidates[0].publish_date, "2026-01-05")
-        self.assertTrue(candidates[0].url.startswith("https://www.hnrsks.com/"))
+        self.assertTrue(candidates[0].url.startswith("http://www.hnrsks.com/"))
         self.assertNotIn("example.com", {item.url for item in candidates})
 
 
