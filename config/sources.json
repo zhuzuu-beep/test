@@ -1,0 +1,148 @@
+{
+  "version": 1,
+  "request_policy": {
+    "timeout_seconds": 15,
+    "retries": 2,
+    "same_domain_interval_seconds": 3
+  },
+  "sources": [
+    {
+      "id": "hnrsks",
+      "name": "河南省人事考试中心",
+      "region": "省级",
+      "enabled": true,
+      "allowed_domains": ["hnrsks.com"],
+      "feeds": [
+        {
+          "id": "hnrsks_home",
+          "list_url": "https://www.hnrsks.com/",
+          "parser_type": "generic_link_date",
+          "encoding": "auto",
+          "interval_min": 1440,
+          "min_items": 1,
+          "recruitment_context": false,
+          "link_include_patterns": ["article"],
+          "link_exclude_patterns": ["javascript:"],
+          "verification_status": "official_domain_and_article_pattern_verified_list_selector_pending"
+        }
+      ]
+    },
+    {
+      "id": "henan_hrss",
+      "name": "河南省人力资源和社会保障厅",
+      "region": "省级",
+      "enabled": false,
+      "allowed_domains": ["hrss.henan.gov.cn"],
+      "feeds": [
+        {
+          "id": "henan_hrss_recruitment",
+          "list_url": "https://hrss.henan.gov.cn/",
+          "parser_type": "generic_link_date",
+          "encoding": "auto",
+          "interval_min": 1440,
+          "min_items": 1,
+          "recruitment_context": true,
+          "link_include_patterns": ["article|content"],
+          "verification_status": "pending_column_url"
+        }
+      ]
+    },
+    {
+      "id": "zhengzhou_hrss",
+      "name": "郑州市人力资源和社会保障局",
+      "region": "郑州",
+      "enabled": false,
+      "allowed_domains": ["zzrs.zhengzhou.gov.cn", "public.zhengzhou.gov.cn"],
+      "feeds": [
+        {
+          "id": "zhengzhou_hrss_recruitment",
+          "list_url": "https://zzrs.zhengzhou.gov.cn/zlgg/index.jhtml",
+          "parser_type": "generic_link_date",
+          "encoding": "auto",
+          "interval_min": 1440,
+          "min_items": 3,
+          "recruitment_context": true,
+          "link_include_patterns": ["jhtml|public\\.zhengzhou\\.gov\\.cn"],
+          "verification_status": "list_url_verified_selector_pending"
+        }
+      ]
+    },
+    {
+      "id": "zhengzhou_rsks",
+      "name": "郑州人事考试网",
+      "region": "郑州",
+      "enabled": false,
+      "allowed_domains": ["zzrsks.com.cn"],
+      "feeds": [
+        {
+          "id": "zhengzhou_rsks_home",
+          "list_url": "https://www.zzrsks.com.cn/",
+          "parser_type": "generic_link_date",
+          "encoding": "auto",
+          "interval_min": 1440,
+          "min_items": 1,
+          "recruitment_context": true,
+          "verification_status": "pending_live_access"
+        }
+      ]
+    },
+    {
+      "id": "zhoukou_hrss",
+      "name": "周口市人力资源和社会保障局",
+      "region": "周口",
+      "enabled": false,
+      "allowed_domains": ["rsj.zhoukou.gov.cn", "hrss.henan.gov.cn"],
+      "feeds": [
+        {
+          "id": "zhoukou_hrss_notices",
+          "list_url": "https://rsj.zhoukou.gov.cn/sitesources/zkrlzyhshbzj/page_pc/xwdt/gggs/list2.html",
+          "parser_type": "generic_link_date",
+          "encoding": "auto",
+          "interval_min": 1440,
+          "min_items": 3,
+          "recruitment_context": false,
+          "link_include_patterns": ["article|hrss\\.henan\\.gov\\.cn"],
+          "verification_status": "list_url_verified_selector_pending"
+        }
+      ]
+    },
+    {
+      "id": "zhoukou_rsks",
+      "name": "周口人事考试网",
+      "region": "周口",
+      "enabled": false,
+      "allowed_domains": ["zkrsks.com"],
+      "feeds": [
+        {
+          "id": "zhoukou_rsks_home",
+          "list_url": "http://www.zkrsks.com/",
+          "parser_type": "generic_link_date",
+          "encoding": "auto",
+          "interval_min": 1440,
+          "min_items": 1,
+          "recruitment_context": true,
+          "verification_status": "pending_http_redirect_encoding_check"
+        }
+      ]
+    },
+    {
+      "id": "scs",
+      "name": "国家公务员局",
+      "region": "国家",
+      "enabled": false,
+      "allowed_domains": ["scs.gov.cn", "bm.scs.gov.cn"],
+      "feeds": [
+        {
+          "id": "scs_annual_exam",
+          "list_url": "https://www.scs.gov.cn/",
+          "parser_type": "generic_link_date",
+          "encoding": "auto",
+          "interval_min": 1440,
+          "min_items": 1,
+          "recruitment_context": true,
+          "verification_status": "pending_annual_topic_discovery"
+        }
+      ]
+    }
+  ]
+}
