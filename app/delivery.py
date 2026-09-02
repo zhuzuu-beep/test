@@ -65,14 +65,16 @@ def build_card(items: list[dict[str, object]], title: str = "河南招聘公告�
 
 
 def build_health_card(snapshot: dict[str, int]) -> dict[str, Any]:
+    failed = snapshot["failed_feeds"]
+    status_text = "今日监控运行正常" if failed == 0 else "今日监控存在抓取失败，请检查渠道状态"
     content = (
-        "今日监控运行正常\n"
+        f"{status_text}\n"
         f"启用栏目：{snapshot['enabled_feeds']}\n"
         f"成功栏目：{snapshot['successful_feeds']}\n"
-        f"失败栏目：{snapshot['failed_feeds']}\n"
+        f"失败栏目：{failed}\n"
         f"新增公告：{snapshot['new_announcements']}"
     )
-    color = "green" if snapshot["failed_feeds"] == 0 else "orange"
+    color = "green" if failed == 0 else "orange"
     return {
         "msg_type": "interactive",
         "card": {
