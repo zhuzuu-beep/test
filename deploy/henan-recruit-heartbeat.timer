@@ -1,0 +1,10 @@
+[Unit]
+Description=Send Henan Recruitment Monitor health receipt at 21:00 China time
+
+[Timer]
+OnCalendar=*-*-* 21:00:00 Asia/Shanghai
+Persistent=true
+Unit=henan-recruit-heartbeat.service
+
+[Install]
+WantedBy=timers.target
