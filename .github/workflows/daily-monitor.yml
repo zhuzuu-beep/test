@@ -5,10 +5,6 @@ on:
     # GitHub Actions使用UTC时间。13:05 UTC对应北京时间21:05。
     - cron: '5 13 * * *'
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflow-test-trigger'
 
 permissions:
   contents: write
@@ -25,7 +21,7 @@ jobs:
       TZ: Asia/Shanghai
       FEISHU_WEBHOOK_URL: ${{ secrets.FEISHU_WEBHOOK_URL }}
       FEISHU_SECRET: ${{ secrets.FEISHU_SECRET }}
-      DRY_RUN: ${{ github.event_name == 'push' || secrets.FEISHU_WEBHOOK_URL == '' }}
+      DRY_RUN: ${{ secrets.FEISHU_WEBHOOK_URL == '' }}
 
     steps:
       - name: 检出代码和历史状态
@@ -41,33 +37,13 @@ jobs:
       - name: 运行自动化测试
         run: python -m unittest discover -s tests -v
 
-      - name: 测试河南人事考试网TLS兼容性
-        if: github.event_name == 'push'
-        continue-on-error: true
-        run: |
-          set +e
-          for mode in default legacy; do
-            echo "===== HTTPS $mode ====="
-            if [ "$mode" = "legacy" ]; then
-              curl -4 -I --max-time 25 --connect-timeout 10 \
-                --ciphers 'DEFAULT:@SECLEVEL=1' \
-                'https://www.hnrsks.com/sitesources/hnsrskszx/page_pc/index.html'
-            else
-              curl -4 -I --max-time 25 --connect-timeout 10 \
-                'https://www.hnrsks.com/sitesources/hnsrskszx/page_pc/index.html'
-            fi
-          done
-          echo "===== HTTP redirect ====="
-          curl -4 -I --max-time 25 --connect-timeout 10 \
-            'http://www.hnrsks.com/sitesources/hnsrskszx/page_pc/index.html'
-
       - name: 执行每日采集和飞书推送
         id: daily
         continue-on-error: true
         run: |
           extra_args=()
           if [ "$DRY_RUN" = "true" ]; then
-            echo "未配置飞书密钥或本次为测试触发，使用dry-run模式"
+            echo "未配置飞书Webhook，使用dry-run模式"
             extra_args+=(--dry-run)
           fi
           python -m app.cli \
