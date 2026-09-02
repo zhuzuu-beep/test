@@ -1,16 +1,16 @@
 # 河南招聘公告监控与飞书推送
 
-当前版本：0.2.0，对应需求规格v1.2及“每天运行一次、优先使用GitHub Actions”的后续业务决定。当前默认仅启用河南省人事考试中心首页栏目，其余P0栏目必须完成生产网络踩点后再启用。
+当前版本：0.2.0，对应需求规格v1.2。生产监控已改由ChatGPT自动任务执行；本仓库保留采集程序、测试和手动验收能力。
 
-## 首选运行方式
+## 当前运行方式
 
-当前首选GitHub私有仓库和GitHub Actions，每天北京时间21:05运行一次。工作流文件为：
+ChatGPT自动任务每天北京时间21:05检查官方渠道，结果直接发送到ChatGPT。GitHub Actions的定时触发已关闭，工作流只保留手动测试入口：
 
 ```text
 .github/workflows/daily-monitor.yml
 ```
 
-首次运行只建立冷启动基线，但会发送运行回执；后续发现新公告时发送公告卡片。SQLite状态自动保存到 `state/recruit_monitor.db` 并提交回仓库。详细步骤见 `GITHUB_DEPLOYMENT.md`。
+GitHub版本的SQLite去重及飞书投递代码继续保留，必要时可手动验收或重新启用。详细步骤见 `GITHUB_DEPLOYMENT.md`。
 
 ## 已实现能力
 
@@ -66,6 +66,6 @@ python3 -m app.cli --config-dir config --db data/recruit_monitor.db phase0 --net
 
 Webhook、签名密钥和PushPlus Token只允许通过环境变量提供，不得写入配置、数据库、日志或测试样本。`sources.json`中只有`enabled=true`的栏目会参与运行；`verification_status`为pending的栏目不得在未踩点时启用。
 
-## 当前阻塞项
+## 当前状态
 
-GitHub工作流和持久化状态机制已经就绪。真实飞书Webhook尚未写入仓库密钥，河南省人事考试中心仍需通过GitHub运行器完成一次真实网络验收；其他P0栏目继续保持禁用。具体状态见`PHASE0_STATUS.md`。
+GitHub实抓、冷启动和重复运行测试已经通过，定时触发现已关闭。日常监控由ChatGPT自动任务承担，无需配置飞书Webhook。
