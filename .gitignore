@@ -1,0 +1,13 @@
+__pycache__/
+*.py[cod]
+.venv/
+.env
+data/*.db*
+logs/*.log*
+backups/*.db*
+reports/*.json
+state/*.db-wal
+state/*.db-shm
+dist/
+build/
+*.egg-info/
