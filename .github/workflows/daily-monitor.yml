@@ -1,0 +1,73 @@
+name: 河南招聘每日监控
+
+on:
+  schedule:
+    # GitHub Actions使用UTC时间。13:05 UTC对应北京时间21:05。
+    - cron: '5 13 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: henan-recruit-monitor-daily
+  cancel-in-progress: false
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      TZ: Asia/Shanghai
+      FEISHU_WEBHOOK_URL: ${{ secrets.FEISHU_WEBHOOK_URL }}
+      FEISHU_SECRET: ${{ secrets.FEISHU_SECRET }}
+
+    steps:
+      - name: 检出代码和历史状态
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 配置Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 运行自动化测试
+        run: python -m unittest discover -s tests -v
+
+      - name: 执行每日采集和飞书推送
+        id: daily
+        continue-on-error: true
+        run: >-
+          python -m app.cli
+          --config-dir config
+          --db state/recruit_monitor.db
+          --log-dir logs
+          daily
+
+      - name: 合并SQLite临时日志
+        if: always()
+        run: >-
+          python -m app.cli
+          --config-dir config
+          --db state/recruit_monitor.db
+          --log-dir logs
+          checkpoint-db
+
+      - name: 保存去重和投递状态
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f state/recruit_monitor.db
+          if git diff --cached --quiet; then
+            echo "状态无变化，无需提交"
+          else
+            git commit -m "chore: 保存招聘监控状态"
+            git push
+          fi
+
+      - name: 标记采集或推送失败
+        if: always() && steps.daily.outcome == 'failure'
+        run: exit 1
