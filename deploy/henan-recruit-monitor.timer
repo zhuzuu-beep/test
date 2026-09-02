@@ -1,0 +1,11 @@
+[Unit]
+Description=Run Henan Recruitment Monitor every 30 minutes
+
+[Timer]
+OnCalendar=*:0/30
+Persistent=true
+RandomizedDelaySec=120
+Unit=henan-recruit-monitor.service
+
+[Install]
+WantedBy=timers.target
